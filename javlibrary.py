@@ -56,15 +56,18 @@ class JAVLibrary():
     def get_original_title(self, data):
         return data.find("div", {"id": "video_title"}).find("a").text.strip()
 
-
     def get_roles(self, data):
-        ele = self.find_ele(data, "Cast:")
-        if ele:
-            return [               
-                {"name": list(filter(None, item.text.strip().split(" ")))[1] + " " + list(filter(None, item.text.strip().split(" ")))[0]}
-                for item in ele.findAll("a")
-            ]
-        return []   
+        try:
+            ele = self.find_ele(data, "Cast:")
+            if ele:
+                return [               
+                    {"name": list(filter(None, item.text.strip().split(" ")))[1] + " " + list(filter(None, item.text.strip().split(" ")))[0]}
+                    for item in ele.findAll("a")
+                ]
+        except Exception as e:
+            logging.error(f"Error {e}")
+        finally:
+            return []   
 
     def get_posters(self, data):
         javlibrary_thumb = data.find("img", {"id": "video_jacket_img"})

@@ -1,6 +1,7 @@
 # import cloudscraper
 import json
 import os
+import time
 import logging
 import urllib.request
 from javlibrary import JAVLibrary
@@ -24,7 +25,7 @@ def download_poster(urls,path,poster):
         except Exception as e:
             logging.error(f'Failed to retrieve image. {e}')
 
-BASE_PATH = "/mnt/d/Download/"
+BASE_PATH = "/mnt/k/Adult/Japan/Censored/Temp"
 
 def main():
     # Your main code logic here
@@ -38,9 +39,18 @@ def main():
     list_code = get_list_folder(BASE_PATH)
     logging.debug(f"list folders name {list_code}")    
     for code in list_code:
-        movie_info = get_movie_info(code,userAgent=userAgent,javlibraryCFClearance=javlibraryCFClearance)       
-        download_poster(movie_info['art'], BASE_PATH+ code + "/", movie_info['title'])
-        os.rename(BASE_PATH+ code, BASE_PATH + movie_info['title'])
+        try:
+            movie_info = get_movie_info(code,userAgent=userAgent,javlibraryCFClearance=javlibraryCFClearance)       
+            download_poster(movie_info['art'], BASE_PATH+ code + "/", code)
+            if len(movie_info['title']) >= 254:
+                cut_string =  movie_info['title'][:254]
+                os.rename(BASE_PATH+ code, BASE_PATH + cut_string)
+            else:
+                os.rename(BASE_PATH+ code, BASE_PATH + movie_info['title'])
+            time.sleep(5)
+        except Exception as e:
+            logging.error(f"Exception happen {e}")     
+
 if __name__ == "__main__":
     main()
 
