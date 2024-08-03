@@ -14,7 +14,7 @@ class JAVLibrary():
         self.javlibraryCFClearance = javlibraryCFClearance
     
     def get_agent_id(self, keyword):
-        keyword = keyword.upper()       
+        keyword = keyword.upper()
         url = "https://www.javlibrary.com/en/vl_searchbyid.php"
         params = {
             "keyword": keyword
@@ -35,12 +35,10 @@ class JAVLibrary():
                 return            
         return agent_id 
     
-
-
     def get_metadata(self, keyword):
         agent_id = self.get_agent_id(keyword)
+        logging.debug(f"get_metadata agent_id : {agent_id}")
         data = self.crawl(agent_id)
-
         title = self.get_original_title(data)
         if not title:
             raise Exception(
