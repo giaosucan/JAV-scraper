@@ -8,7 +8,7 @@ This script scrap the data from JAV website, download the poster and rename the 
 
 ### How to use
 Because JavLibrary use CloudFlare anti-bot protection, we need to use cookies to by pass it
-1. Access JavaLibrary from Chrome, go to console developer -> network tab -> doc -> set_cookies, extract string value of cf_clearance and User-Agent fields
+1. Access JavaLibrary from Chrome, go to console developer -> *network tab -> doc -> set_cookies*, extract string value of **cf_clearance** and **User-Agent** fields
 2. Copy above value to cookies.json
 
 ```
