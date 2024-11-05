@@ -6,6 +6,8 @@ import urllib.request
 import argparse
 from javlibrary import JAVLibrary
 
+API_KEY="xbsggewhhwheye13232323"
+
 # Configure logging
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
