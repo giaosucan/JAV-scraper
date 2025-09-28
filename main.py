@@ -1,4 +1,5 @@
 import json
+import re
 import os
 import time
 import logging
@@ -23,10 +24,16 @@ def process_movie(directory_path, userAgent, javlibraryCFClearance):
     for movie_dir in movie_dirs:    
         logging.debug(f"Processing movie directory: {movie_dir}") 
         movie_info = get_movie_info(movie_dir, userAgent, javlibraryCFClearance)
+        print(movie_info)
         if movie_info:
             poster_urls = movie_info.get('art', [])           
             if poster_urls:
                 download_poster(poster_urls, os.path.join(directory_path, movie_dir), movie_dir)
+                 # Remove both double quotes and single quotes
+                cleaned_title = re.sub(r'[\\/:*?"<>|\'"]', '', movie_info["title"])
+                 # Strip leading/trailing spaces and dots
+                cleaned_title = cleaned_title.strip(" .")
+                movie_info["title"] = cleaned_title[:255]
                 os.rename(directory_path + movie_dir, directory_path + movie_info['title'])
             else:
                 logging.warning(f"No poster URLs found for movie code: {movie_dir}")
@@ -82,16 +89,15 @@ def main():
     args = parser.parse_args()
     config = vars(args)    
  
-    logging.info(f"Start scrapping data from folder {config["directory_path"]}...")       
+    logging.info(f"Start scrapping data from folder {config['directory_path']}...")       
     
     # Load JSON data from a file
     with open('cookies.json', 'r') as file:
         data = json.load(file)
     # Accessing values
     userAgent = data["userAgent"]
-    javlibraryCFClearance = data["javlibraryCFClearance"]    
-     
-    process_movie(config["directory_path"], userAgent, javlibraryCFClearance)  
+    javlibraryCFClearance = data["javlibraryCFClearance"]       
+    process_movie(config['directory_path'], userAgent, javlibraryCFClearance)  
 
 if __name__ == "__main__":
     main()

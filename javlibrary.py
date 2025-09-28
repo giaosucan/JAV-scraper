@@ -84,6 +84,8 @@ class JAVLibrary():
             if not src.startswith("http"):
                 src = "https:" + src
             return [src]
+        
+    
 
     def crawl(self, agent_id):
         url = "https://www.javlibrary.com/en/"
