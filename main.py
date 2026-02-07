@@ -33,7 +33,8 @@ def process_movie(directory_path, userAgent, javlibraryCFClearance):
                 cleaned_title = re.sub(r'[\\/:*?"<>|\'"]', '', movie_info["title"])
                  # Strip leading/trailing spaces and dots
                 cleaned_title = cleaned_title.strip(" .")
-                movie_info["title"] = cleaned_title[:255]
+                # Limit to 100 characters to avoid Windows long path issues
+                movie_info["title"] = cleaned_title[:100]
                 os.rename(directory_path + movie_dir, directory_path + movie_info['title'])
             else:
                 logging.warning(f"No poster URLs found for movie code: {movie_dir}")

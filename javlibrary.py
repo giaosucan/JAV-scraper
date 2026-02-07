@@ -26,10 +26,14 @@ class JAVLibrary():
         if soup.find("div", "videos"):
             if soup.find("div", "video"):
                 for video in soup.find_all("div", "video"):
-                    agent_id = video.find("a")["href"][5:]
+                    href = video.find("a")["href"]
+                    # Extract ID from href (e.g., ./javme3ldr4.html or /en/javme3ldr4.html)
+                    agent_id = href.split('/')[-1].replace('.html', '')
         else:
             try:
-                agent_id = soup.find("h3", "post-title").find("a")["href"][7:]
+                href = soup.find("h3", "post-title").find("a")["href"]
+                # Extract ID from href (e.g., ./javme3ldr4.html or /en/javme3ldr4.html)
+                agent_id = href.split('/')[-1].replace('.html', '')
             except AttributeError:
                 logging.error("an exception occurred: " + url)
                 return            
