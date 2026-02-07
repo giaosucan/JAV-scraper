@@ -34,8 +34,16 @@ def process_movie(directory_path, userAgent, javlibraryCFClearance):
                  # Strip leading/trailing spaces and dots
                 cleaned_title = cleaned_title.strip(" .")
                 # Limit to 100 characters to avoid Windows long path issues
-                movie_info["title"] = cleaned_title[:100]
-                os.rename(directory_path + movie_dir, directory_path + movie_info['title'])
+                cleaned_title = cleaned_title[:100].strip()
+                
+                old_path = os.path.join(directory_path, movie_dir)
+                new_path = os.path.join(directory_path, cleaned_title)
+                
+                try:
+                    os.rename(old_path, new_path)
+                    logging.info(f"Renamed: {movie_dir} -> {cleaned_title}")
+                except Exception as e:
+                    logging.error(f"Failed to rename {movie_dir} to {cleaned_title}: {e}")
             else:
                 logging.warning(f"No poster URLs found for movie code: {movie_dir}")
         
